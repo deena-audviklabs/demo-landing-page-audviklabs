@@ -46,15 +46,21 @@
     </script>
 
     <style>
-        html,
+        
+    html {
+            /* Removed overscroll-behavior: none */
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
             padding: 0;
             background-color: #050508;
             color: white;
-            overscroll-behavior: none;
             width: 100%;
-            overflow-x: hidden;
+            /* Keep horizontal overflow hidden only on body */
+            overflow-x: hidden; 
+            position: relative;
         }
 
         /* --- LENIS SCROLL --- */
