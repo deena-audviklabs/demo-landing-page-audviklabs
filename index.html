@@ -47,20 +47,17 @@
 
     <style>
         
-    html {
-            /* Removed overscroll-behavior: none */
-            scroll-behavior: smooth;
-        }
-
+        html,
         body {
             margin: 0;
             padding: 0;
             background-color: #050508;
             color: white;
             width: 100%;
-            /* Keep horizontal overflow hidden only on body */
-            overflow-x: hidden; 
+            max-width: 100%; /* Force width limit */
+            overflow-x: hidden; /* Hide overflow on BOTH html and body */
             position: relative;
+            scroll-behavior: smooth;
         }
 
         /* --- LENIS SCROLL --- */
@@ -2220,35 +2217,96 @@
                 });
             });
 
-            // --- SCROLL REVEAL ---
-            const isMobile = window.innerWidth < 768;
-            const sr = ScrollReveal({
-                origin: 'bottom',
-                distance: isMobile ? '30px' : '60px',
-                duration: isMobile ? 600 : 1000,
-                delay: isMobile ? 0 : 200,
-                opacity: 0,
-                scale: 1,
-                easing: 'cubic-bezier(0.5, 0, 0, 1)',
-                viewFactor: isMobile ? 0.1 : 0.2,
-                reset: false
-            });
+// --- SCROLL REVEAL (Optimized for Instant Mobile View) ---
+        const isMobile = window.innerWidth < 768;
+        
+        const sr = ScrollReveal({
+            origin: 'bottom',
+            distance: isMobile ? '20px' : '60px', // Shorter distance for mobile
+            duration: isMobile ? 400 : 1000,      // Mobile: 400ms (Much faster)
+            delay: 0,                             // Mobile: 0ms delay globally
+            opacity: 0,
+            scale: 1,
+            easing: 'cubic-bezier(0.5, 0, 0, 1)',
+            viewFactor: isMobile ? 0.05 : 0.2,    // 0.05 means trigger IMMEDIATELY when 5% visible
+            reset: false
+        });
 
-            sr.reveal('h1', { origin: 'top', distance: '20px', delay: isMobile ? 100 : 300 });
-            sr.reveal('.hero-btn-primary', { delay: isMobile ? 200 : 500, origin: 'left' });
-            sr.reveal('.hero-btn-secondary', { delay: isMobile ? 300 : 600, origin: 'right' });
-            sr.reveal('.p-4', { interval: 100, origin: 'bottom', delay: isMobile ? 400 : 800 });
-            sr.reveal('#about h2', { origin: 'left' });
-            sr.reveal('#about .space-y-6', { origin: 'left', delay: isMobile ? 100 : 400 });
-            sr.reveal('.liquid-card', { origin: 'right', delay: isMobile ? 100 : 500, scale: 0.9 });
-            sr.reveal('.service-card', { interval: isMobile ? 50 : 100, distance: '30px', scale: 0.95 });
-            sr.reveal('#milestones h2', { origin: 'top' });
-            sr.reveal('#milestones .grid > div', { interval: 100, origin: 'bottom' });
-            sr.reveal('#products h2', { origin: 'top' });
-            sr.reveal('#products .grid > a', { interval: 100, origin: 'bottom', scale: 0.95 });
-            sr.reveal('.client-glass-card', { interval: isMobile ? 50 : 100, origin: 'bottom', scale: 0.9 });
-            sr.reveal('.tech-spotlight-card', { interval: isMobile ? 30 : 50, distance: '20px', origin: 'bottom' });
-            sr.reveal('footer .grid', { delay: 100, origin: 'bottom' });
+        // H1 - Instant on mobile
+        sr.reveal('h1', { 
+            origin: 'top', 
+            distance: '20px', 
+            delay: isMobile ? 0 : 300 
+        });
+
+        // Hero Buttons - Very slight stagger on mobile
+        sr.reveal('.hero-btn-primary', { 
+            delay: isMobile ? 100 : 500, 
+            origin: 'left' 
+        });
+        sr.reveal('.hero-btn-secondary', { 
+            delay: isMobile ? 150 : 600, 
+            origin: 'right' 
+        });
+
+        // Stats Cards - Faster interval on mobile
+        sr.reveal('.p-4', { 
+            interval: isMobile ? 50 : 100, // Faster ripple effect
+            origin: 'bottom', 
+            delay: isMobile ? 0 : 800      // Starts immediately on mobile
+        });
+
+        // Section Headers
+        sr.reveal('#about h2', { origin: 'left' });
+        sr.reveal('#milestones h2', { origin: 'top' });
+        sr.reveal('#products h2', { origin: 'top' });
+
+        // Text & Lists - Zero delay on mobile
+        sr.reveal('#about .space-y-6', { 
+            origin: 'left', 
+            delay: isMobile ? 0 : 400 
+        });
+
+        // Cards - Faster Appearance
+        sr.reveal('.liquid-card', { 
+            origin: 'right', 
+            delay: isMobile ? 0 : 500, 
+            scale: 0.9 
+        });
+
+        sr.reveal('.service-card', { 
+            interval: isMobile ? 50 : 100, 
+            distance: '30px', 
+            scale: 0.95 
+        });
+
+        sr.reveal('#milestones .grid > div', { 
+            interval: isMobile ? 50 : 100, 
+            origin: 'bottom' 
+        });
+
+        sr.reveal('#products .grid > a', { 
+            interval: isMobile ? 50 : 100, 
+            origin: 'bottom', 
+            scale: 0.95 
+        });
+
+        sr.reveal('.client-glass-card', { 
+            interval: isMobile ? 30 : 100, 
+            origin: 'bottom', 
+            scale: 0.9 
+        });
+
+        sr.reveal('.tech-spotlight-card', { 
+            interval: isMobile ? 20 : 50, // Very fast ripple for tech cards
+            distance: '20px', 
+            origin: 'bottom' 
+        });
+
+        sr.reveal('footer .grid', { 
+            delay: isMobile ? 0 : 100, 
+            origin: 'bottom' 
+        });
 
             /* --- TILT EFFECT --- */
             VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
